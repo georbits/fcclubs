@@ -70,6 +70,26 @@ roster.
 }
 ```
 
+### League Administration
+
+Administrators can stand up leagues via `POST /api/leagues`. Supply a unique
+name, a season label, optional `defaultMatchDay` (defaults to Sunday), and at
+least two club IDs. The service registers the clubs to the league and creates a
+double round-robin fixture list with two matches per match day starting on the
+next default day at 18:00 UTC.
+
+```json
+{
+  "name": "FC26 Premier League",
+  "season": "2024",
+  "defaultMatchDay": "SUNDAY",
+  "clubIds": [1, 2, 3, 4]
+}
+```
+
+The response includes the persisted league metadata plus how many fixtures were
+scheduled so admins can confirm the generated bracket.
+
 ### Configuration
 The application reads configuration from `application.yml` with sensible
 defaults. Override them with environment variables when necessary:

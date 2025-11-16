@@ -3,6 +3,11 @@ package com.fcclubs.backend.domain.league;
 import java.time.DayOfWeek;
 import java.time.OffsetDateTime;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import com.fcclubs.backend.domain.club.Club;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -10,6 +15,9 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Version;
 
@@ -36,6 +44,12 @@ public class League {
 
     @Column(nullable = false)
     private OffsetDateTime updatedAt = OffsetDateTime.now();
+
+    @ManyToMany
+    @JoinTable(name = "league_clubs",
+            joinColumns = @JoinColumn(name = "league_id"),
+            inverseJoinColumns = @JoinColumn(name = "club_id"))
+    private Set<Club> clubs = new HashSet<>();
 
     @Version
     private long version;
@@ -82,6 +96,14 @@ public class League {
 
     public void setUpdatedAt(OffsetDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public Set<Club> getClubs() {
+        return clubs;
+    }
+
+    public void setClubs(Set<Club> clubs) {
+        this.clubs = clubs;
     }
 
     public long getVersion() {
