@@ -17,6 +17,19 @@ we can verify deployments end-to-end while we build out the remaining features.
    below).
 2. From the `backend/` directory run `mvn spring-boot:run` to start the API.
 3. Call `GET http://localhost:8080/api/health` to confirm the service is up.
+4. Register a new account via `POST http://localhost:8080/api/auth/register`
+   (see payload below) to seed initial users.
+
+```json
+{
+  "email": "captain@example.com",
+  "displayName": "Club Captain",
+  "password": "changeme123",
+  "platform": "EA",
+  "platformHandle": "captain-handle",
+  "profileImageUrl": null
+}
+```
 
 ### Configuration
 The application reads configuration from `application.yml` with sensible
@@ -33,7 +46,7 @@ defaults. Override them with environment variables when necessary:
 Flyway will apply the baseline schema automatically on startup.
 
 ## Next Steps
-- Implement repositories/services for the user, club, and league aggregates.
-- Expose authentication-aware endpoints for profile management and club admin
-  flows.
+- Build profile management and club admin flows on top of the user repository
+  introduced here.
+- Flesh out league scheduling endpoints backed by Spring Data repositories.
 - Add integration tests backed by Testcontainers.
