@@ -7,17 +7,17 @@ PostgreSQL and OAuth2 authentication.
 ## Repository Layout
 - `frontend/` – Angular workspace (to be scaffolded) with public and private
   feature areas.
-- `backend/` – Spring Boot project (to be scaffolded) implementing the REST API
-  and PostgreSQL integrations.
+- `backend/` – Spring Boot service that exposes the REST API, PostgreSQL data
+  model, Flyway migrations, and OAuth2 resource server configuration.
 - `docs/` – Architecture notes and product requirements.
 
 ## Getting Started
 1. Review [`docs/system-overview.md`](docs/system-overview.md) for the initial
    requirements, architecture, and API sketch.
-2. Bootstrap the Angular app (recommended: Angular CLI + NgRx) under
+2. Explore the Spring Boot backend under `backend/` and configure local
+   PostgreSQL/OAuth settings per its README.
+3. Bootstrap the Angular app (recommended: Angular CLI + NgRx) under
    `frontend/`.
-3. Scaffold the Spring Boot service under `backend/`, configure OAuth2, and
-   define database migrations.
 4. Connect the SPA to the API endpoints, iterating on leagues, clubs, and match
    result workflows.
 
