@@ -37,7 +37,8 @@ accounts.
 1. **Profile Management**: CRUD for personal data, password change, avatar upload,
    and platform account via the secured `/api/profile` endpoint.
 2. **Club Management**
-   - Administrators create clubs and assign managers.
+   - Administrators create clubs and assign managers. Creating a club should auto-promote
+     the assigned manager to `CLUB_MANAGER` (if necessary) and add them to the roster.
    - Managers invite/remove players and capture match results (score, scorers, notes).
 3. **League Management**
    - Administrators define leagues, assign clubs, generate home/away fixtures.

@@ -21,6 +21,8 @@ we can verify deployments end-to-end while we build out the remaining features.
    (see payload below) to seed initial users.
 5. Authenticate via OAuth2 and call `GET/PUT http://localhost:8080/api/profile`
    to read or update the authenticated user's profile information.
+6. Promote yourself to an admin (via database for now) and call
+   `POST http://localhost:8080/api/clubs` to seed club data.
 
 ```json
 {
@@ -49,6 +51,22 @@ the user wants to rotate credentials:
   "platformHandle": "captain-handle",
   "profileImageUrl": "https://cdn.example.com/profile.png",
   "newPassword": "better-password-123"
+}
+```
+
+### Club Administration
+
+Administrators can create new clubs via `POST /api/clubs`. Provide a name, short
+code, optional logo URL, and the ID of the user who should manage the club.
+Managers automatically receive the `CLUB_MANAGER` role and are added to the
+roster.
+
+```json
+{
+  "name": "Aurora FC",
+  "shortCode": "AFC",
+  "logoUrl": "https://cdn.example.com/aurora.png",
+  "managerUserId": 42
 }
 ```
 
