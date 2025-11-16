@@ -19,6 +19,8 @@ we can verify deployments end-to-end while we build out the remaining features.
 3. Call `GET http://localhost:8080/api/health` to confirm the service is up.
 4. Register a new account via `POST http://localhost:8080/api/auth/register`
    (see payload below) to seed initial users.
+5. Authenticate via OAuth2 and call `GET/PUT http://localhost:8080/api/profile`
+   to read or update the authenticated user's profile information.
 
 ```json
 {
@@ -28,6 +30,25 @@ we can verify deployments end-to-end while we build out the remaining features.
   "platform": "EA",
   "platformHandle": "captain-handle",
   "profileImageUrl": null
+}
+```
+
+### Profile Management
+
+Authenticated users can manage their profiles through the `/api/profile`
+endpoint once they present a valid JWT. `GET /api/profile` returns the persisted
+user metadata while `PUT /api/profile` updates the record. The update payload
+requires the same fields as registration plus an optional `newPassword` field if
+the user wants to rotate credentials:
+
+```json
+{
+  "email": "captain@example.com",
+  "displayName": "Club Captain",
+  "platform": "EA",
+  "platformHandle": "captain-handle",
+  "profileImageUrl": "https://cdn.example.com/profile.png",
+  "newPassword": "better-password-123"
 }
 ```
 

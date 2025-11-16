@@ -34,7 +34,8 @@ accounts.
 3. **Club Page**: Show logo, roster, and the two most recent results with links to detailed fixtures.
 
 ## Private-Site Requirements
-1. **Profile Management**: CRUD for personal data, password change, avatar upload, and platform account.
+1. **Profile Management**: CRUD for personal data, password change, avatar upload,
+   and platform account via the secured `/api/profile` endpoint.
 2. **Club Management**
    - Administrators create clubs and assign managers.
    - Managers invite/remove players and capture match results (score, scorers, notes).
@@ -58,7 +59,7 @@ accounts.
 | POST | `/api/auth/register` | Register new user with platform metadata. | Public |
 | GET | `/api/leagues/current/standings` | Retrieve standings for home page. | Public |
 | GET | `/api/clubs/{clubId}` | Club page details. | Public |
-| PUT | `/api/users/me` | Update profile. | Player+ |
+| GET/PUT | `/api/profile` | Retrieve or update the authenticated profile. | Player+ |
 | POST | `/api/clubs` | Create club and assign manager. | Admin |
 | POST | `/api/clubs/{clubId}/players` | Add player to club. | Manager/Admin |
 | POST | `/api/leagues` | Create a league and match days. | Admin |
