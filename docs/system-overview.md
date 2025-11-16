@@ -40,6 +40,8 @@ accounts.
    - Administrators create clubs and assign managers. Creating a club should auto-promote
      the assigned manager to `CLUB_MANAGER` (if necessary) and add them to the roster.
    - Managers invite/remove players and capture match results (score, scorers, notes).
+     Roster moves flow through `/api/clubs/{clubId}/players` so we can enforce permissions
+     server-side and keep every client in sync with the authoritative roster snapshot.
 3. **League Management**
    - Administrators define leagues, assign clubs, generate home/away fixtures.
    - Support manual override of match days per fixture while defaulting to Sundays with two matches.

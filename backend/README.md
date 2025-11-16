@@ -90,6 +90,25 @@ next default day at 18:00 UTC.
 The response includes the persisted league metadata plus how many fixtures were
 scheduled so admins can confirm the generated bracket.
 
+### Club Roster Management
+
+Managers and administrators can collaborate on the roster through the secured
+`/api/clubs/{clubId}/players` endpoints. Requests require the acting user to be
+either the assigned manager for the club or an admin and return the updated
+roster snapshot in the response.
+
+- `POST /api/clubs/{clubId}/players` adds an existing user to the roster:
+
+```json
+{
+  "userId": 123
+}
+```
+
+- `DELETE /api/clubs/{clubId}/players/{playerId}` removes a rostered player
+  (except the manager). Both endpoints return the latest roster so club staff
+  can refresh their UI without an additional fetch.
+
 ### Configuration
 The application reads configuration from `application.yml` with sensible
 defaults. Override them with environment variables when necessary:
