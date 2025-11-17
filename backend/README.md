@@ -109,6 +109,20 @@ roster snapshot in the response.
   (except the manager). Both endpoints return the latest roster so club staff
   can refresh their UI without an additional fetch.
 
+### Match Results
+
+Club managers (or administrators) can file final scores for scheduled fixtures
+via `POST /api/matches/{fixtureId}/result`. The caller must manage one of the
+participating clubs (or hold the `ADMIN` role). Results cannot be overwritten
+once marked complete.
+
+```json
+{
+  "homeScore": 3,
+  "awayScore": 1
+}
+```
+
 ### Configuration
 The application reads configuration from `application.yml` with sensible
 defaults. Override them with environment variables when necessary:

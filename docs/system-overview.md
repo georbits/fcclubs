@@ -46,6 +46,9 @@ accounts.
    - Administrators define leagues, assign clubs, generate home/away fixtures.
    - Support manual override of match days per fixture while defaulting to Sundays with two matches.
    - League creation should immediately register clubs and generate a double round-robin schedule.
+4. **Match Results**
+   - Club managers submit final scores for their fixtures.
+   - Once a result is recorded the fixture is locked to avoid conflicting updates.
 
 ## High-Level Architecture
 ```
