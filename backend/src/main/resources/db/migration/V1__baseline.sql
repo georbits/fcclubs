@@ -1,0 +1,52 @@
+CREATE TABLE IF NOT EXISTS users (
+    id BIGSERIAL PRIMARY KEY,
+    email VARCHAR(120) NOT NULL UNIQUE,
+    display_name VARCHAR(80) NOT NULL,
+    password_hash VARCHAR(64) NOT NULL,
+    role VARCHAR(20) NOT NULL,
+    platform VARCHAR(20) NOT NULL,
+    platform_handle VARCHAR(60) NOT NULL,
+    profile_image_url VARCHAR(255),
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    version BIGINT NOT NULL DEFAULT 0
+);
+
+CREATE TABLE IF NOT EXISTS clubs (
+    id BIGSERIAL PRIMARY KEY,
+    name VARCHAR(80) NOT NULL UNIQUE,
+    short_code VARCHAR(10) NOT NULL UNIQUE,
+    logo_url VARCHAR(255),
+    manager_id BIGINT REFERENCES users(id),
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    version BIGINT NOT NULL DEFAULT 0
+);
+
+CREATE TABLE IF NOT EXISTS club_players (
+    club_id BIGINT NOT NULL REFERENCES clubs(id) ON DELETE CASCADE,
+    user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    PRIMARY KEY (club_id, user_id)
+);
+
+CREATE TABLE IF NOT EXISTS leagues (
+    id BIGSERIAL PRIMARY KEY,
+    name VARCHAR(80) NOT NULL UNIQUE,
+    season VARCHAR(20) NOT NULL,
+    default_match_day VARCHAR(12) NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    version BIGINT NOT NULL DEFAULT 0
+);
+
+CREATE TABLE IF NOT EXISTS fixtures (
+    id BIGSERIAL PRIMARY KEY,
+    league_id BIGINT NOT NULL REFERENCES leagues(id) ON DELETE CASCADE,
+    home_club_id BIGINT NOT NULL REFERENCES clubs(id) ON DELETE CASCADE,
+    away_club_id BIGINT NOT NULL REFERENCES clubs(id) ON DELETE CASCADE,
+    kickoff_at TIMESTAMPTZ NOT NULL,
+    home_score INT,
+    away_score INT,
+    status VARCHAR(20) NOT NULL,
+    version BIGINT NOT NULL DEFAULT 0
+);
