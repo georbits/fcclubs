@@ -1,0 +1,37 @@
+<div class="min-h-screen bg-slate-950 text-slate-100">
+  <mat-toolbar color="primary" class="sticky top-0 z-10 shadow-lg">
+    <div class="flex items-center gap-3">
+      <mat-icon fontIcon="sports_esports" class="text-slate-900"></mat-icon>
+      <div>
+        <div class="text-lg font-semibold leading-tight">FC26 Pro Clubs</div>
+        <div class="text-xs text-slate-100/80">Tournament control center</div>
+      </div>
+    </div>
+    <span class="flex-1"></span>
+    <nav class="hidden md:flex items-center gap-1">
+      <a
+        *ngFor="let link of navigationLinks"
+        mat-button
+        [routerLink]="link.path"
+        routerLinkActive="bg-slate-100 text-slate-900"
+        [routerLinkActiveOptions]="{ exact: link.path === '/' }"
+        class="rounded-full"
+      >
+        {{ link.label }}
+      </a>
+    </nav>
+  </mat-toolbar>
+
+  <main class="mx-auto max-w-6xl px-4 py-8">
+    <div class="mb-6 flex flex-col gap-2">
+      <p class="text-sm uppercase tracking-widest text-slate-400">FC26 Pro Clubs Tournament</p>
+      <h1 class="text-3xl font-bold text-slate-50">Admin & player portal</h1>
+      <p class="text-slate-300 max-w-3xl">
+        Single-page experience powered by Angular, Material, Tailwind, and NgRx. Public pages expose
+        standings and club details, while authenticated areas host profile settings, club management,
+        and match reporting flows.
+      </p>
+    </div>
+    <router-outlet />
+  </main>
+</div>
