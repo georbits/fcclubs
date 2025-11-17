@@ -1,0 +1,35 @@
+@use '@angular/material' as mat;
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@include mat.core();
+
+$fcclubs-primary: mat.define-palette(mat.$cyan-palette, 500, 300, 700);
+$fcclubs-accent: mat.define-palette(mat.$deep-purple-palette, 400, 200, 600);
+$fcclubs-warn: mat.define-palette(mat.$red-palette);
+
+$fcclubs-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $fcclubs-primary,
+      accent: $fcclubs-accent,
+      warn: $fcclubs-warn,
+    ),
+    density: 0,
+  )
+);
+
+@include mat.all-component-themes($fcclubs-theme);
+
+body {
+  margin: 0;
+  font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background-color: #0f172a;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
