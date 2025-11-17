@@ -23,6 +23,11 @@ import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
 
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+import java.util.Collection;
+import java.util.stream.Collectors;
+
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
