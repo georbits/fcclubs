@@ -32,6 +32,7 @@ accounts.
 1. **Home**: Display standings for the active league, highlight upcoming Sunday fixtures.
 2. **Registration**: Collect email, password, display name, platform account, and platform type. Validate uniqueness.
 3. **Club Page**: Show logo, roster, and the two most recent results with links to detailed fixtures.
+4. **Standings API**: Public endpoint to fetch league tables with points, goal difference, and goals-for tiebreakers.
 
 ## Private-Site Requirements
 1. **Profile Management**: CRUD for personal data, password change, avatar upload,
@@ -65,6 +66,7 @@ accounts.
 |--------|----------|-------------|-------|
 | POST | `/api/auth/register` | Register new user with platform metadata. | Public |
 | GET | `/api/leagues/current/standings` | Retrieve standings for home page. | Public |
+| GET | `/api/leagues/{leagueId}/standings` | Retrieve a league table. | Public |
 | GET | `/api/clubs/{clubId}` | Club page details. | Public |
 | GET/PUT | `/api/profile` | Retrieve or update the authenticated profile. | Player+ |
 | POST | `/api/clubs` | Create club and assign manager. | Admin |

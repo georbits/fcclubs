@@ -123,6 +123,13 @@ once marked complete.
 }
 ```
 
+### League Standings
+
+Public clients can retrieve the latest table for any league via
+`GET /api/leagues/{leagueId}/standings`. The response returns each enrolled
+club with played matches, wins/draws/losses, goal statistics, and points sorted
+by standard tiebreakers (points, goal difference, goals for, name).
+
 ### Configuration
 The application reads configuration from `application.yml` with sensible
 defaults. Override them with environment variables when necessary:
