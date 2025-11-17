@@ -1,15 +1,41 @@
-# Frontend Plan
+# FC26 Pro Clubs SPA
 
-The Angular SPA will use the following structure:
+Angular standalone application styled with Angular Material and Tailwind, using NgRx for state scaffolding. Public routes surface standings, registration, and club details while private areas host profile, club management, and match reporting workflows.
 
-- `app/core`: Authentication service (OAuth2 code flow), API client, guards, and shared models.
-- `app/features/public`: Home (standings), registration, and club detail pages.
-- `app/features/private`: Profile settings, club management dashboard, result submission wizard, and admin-only league builder.
-- `app/shared`: UI components (tables, cards, form controls) styled with Angular Material and Tailwind CSS.
+## Prerequisites
+- Node.js 20+
+- npm 10+
 
-Initial milestones:
-1. Bootstrap Angular workspace with routing, state management (NgRx), and global theming.
-2. Implement public pages backed by mocked API responses.
-3. Integrate OAuth2 login and secure private routes.
-4. Wire profile management forms to backend endpoints.
-5. Deliver club manager workflows (roster management, match result forms) followed by admin league controls.
+## Getting started
+```bash
+npm install
+npm start # alias for ng serve --open
+```
+The dev server runs at http://localhost:4200 and auto-reloads on file changes.
+
+Key scripts:
+- `npm start` – serve the app locally.
+- `npm run build` – production build to `dist/`.
+- `npm test` – run unit tests with Karma.
+
+## Project structure
+```
+frontend/
+  src/app/
+    core/            # auth guard/service, global state wiring
+    features/
+      public/        # home/standings, registration, club detail stubs
+      private/       # profile, club manager, and match reporting stubs
+    shared/          # shared UI/helpers (to be filled as features land)
+  src/styles.scss    # Tailwind + Material theme foundation
+```
+
+## Tech choices
+- **Angular Material** for layout primitives (toolbar, cards, buttons) with a custom cyan/deep-purple theme.
+- **Tailwind CSS** for utility styling and spacing; see `tailwind.config.js` and `postcss.config.js`.
+- **NgRx** store/effects/router-store/devtools registered in `app.config.ts` to support future API integration.
+
+## Next steps
+- Wire OAuth2 login to replace the placeholder `AuthService`/guard logic.
+- Connect public routes to backend standings and club APIs.
+- Build forms for registration, profile updates, roster management, and result submission.
