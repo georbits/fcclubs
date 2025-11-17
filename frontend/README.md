@@ -18,6 +18,10 @@ Key scripts:
 - `npm run build` – production build to `dist/`.
 - `npm test` – run unit tests with Karma.
 
+### Standings API wiring
+- The home page now calls the backend endpoint at `/api/leagues/{leagueId}/standings`.
+- Run the Spring Boot service locally on `http://localhost:8080` and configure your Angular dev server proxy (see Angular docs) if hosting the SPA separately.
+
 ## Project structure
 ```
 frontend/
