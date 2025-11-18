@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { of, throwError } from 'rxjs';
+import { of, Subject, throwError } from 'rxjs';
 import { PLATFORM_OPTIONS } from '../../../core/models/platform';
 import { ProfilePageComponent } from './profile.page';
 import { ProfileResponse, ProfileService, UpdateProfileRequest } from './profile.service';
@@ -86,5 +86,19 @@ describe('ProfilePageComponent', () => {
 
     expect(errorComponent.loading()).toBeFalse();
     expect(errorComponent.errorMessage()).toContain('Unable to load your profile');
+  });
+
+  it('unsubscribes from the profile load when the component is destroyed', () => {
+    const profileSubject = new Subject<ProfileResponse>();
+    profileService.loadProfile.and.returnValue(profileSubject.asObservable());
+
+    const teardownFixture = TestBed.createComponent(ProfilePageComponent);
+    teardownFixture.detectChanges();
+
+    expect(profileSubject.observers.length).toBeGreaterThan(0);
+
+    teardownFixture.destroy();
+
+    expect(profileSubject.observers.length).toBe(0);
   });
 });
