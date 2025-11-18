@@ -19,3 +19,23 @@ export interface ClubRosterResponse {
   managerUserId: number | null;
   players: ClubPlayer[];
 }
+
+export interface ClubResultSummary {
+  fixtureId: number;
+  leagueId: number;
+  leagueName: string;
+  leagueSeason: string;
+  kickoffAt: string;
+  homeClubId: number;
+  homeClubName: string;
+  awayClubId: number;
+  awayClubName: string;
+  homeScore: number;
+  awayScore: number;
+  status: 'COMPLETED' | 'FORFEITED' | 'SCHEDULED';
+  homeClub: boolean;
+}
+
+export interface ClubDetailsResponse extends ClubRosterResponse {
+  recentResults: ClubResultSummary[];
+}
