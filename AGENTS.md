@@ -17,6 +17,7 @@ This repository currently tracks both the Spring Boot backend and Angular fronte
 
 ## Recent progress
 - Removed the legacy Spring MVC layer in favor of the new `/api` stack and deleted duplicate repositories/entities so Maven tests run cleanly again.
+- Frontend now has an authentication interceptor that forwards a stored bearer token to `/api` calls (see `src/app/core/auth/auth.interceptor.ts`) and the auth service persists tokens in `localStorage` with basic unit coverage.
 
 ## Immediate next steps
 - Run the frontend unit suite once a headless Chrome binary is available (`npm test -- --watch=false --progress=false --browsers=ChromeHeadless`).
