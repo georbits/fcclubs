@@ -62,6 +62,13 @@ public class ClubRosterService {
         return clubRepository.save(club);
     }
 
+    @Transactional(readOnly = true)
+    public Club getRoster(Long clubId) {
+        return clubRepository
+                .findWithRosterById(clubId)
+                .orElseThrow(() -> new ClubNotFoundException(clubId));
+    }
+
     private Club loadClub(Long clubId) {
         return clubRepository
                 .findById(clubId)
