@@ -17,6 +17,7 @@ export class AppComponent {
   readonly navigationLinks = [
     { path: '/', label: 'Standings' },
     { path: '/register', label: 'Register' },
+    { path: '/login', label: 'Login' },
     { path: '/profile', label: 'Profile' },
     { path: '/club/manage', label: 'Club manager' },
     { path: '/matches/report', label: 'Report result' },
