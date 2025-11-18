@@ -9,13 +9,16 @@ export interface RegistrationRequest {
   password: string;
   platform: Platform;
   platformHandle: string;
+  profileImageUrl?: string | null;
 }
 
 export interface RegistrationResponse {
-  userId: number;
+  id: number;
   email: string;
   displayName: string;
-  platform: string;
+  platform: Platform;
+  platformHandle: string;
+  profileImageUrl?: string | null;
 }
 
 @Injectable({ providedIn: 'root' })

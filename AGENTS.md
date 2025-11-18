@@ -4,7 +4,7 @@ This repository currently tracks both the Spring Boot backend and Angular fronte
 
 ## Next steps (proposed backlog)
 1. **Frontend authentication wiring**: add real OAuth2/OIDC login + token storage, replace the placeholder auth service/guard, and ensure API calls include credentials (consider a dev proxy for the backend).
-2. **Public registration flow**: build the registration page UI to call `/api/auth/register`, handle validation/errors, and add a success path/redirect.
+2. **Public registration flow**: registration UI now calls `/api/auth/register`, accepts optional avatar URLs, and redirects to a dedicated success page after submission.
 3. **Profile management UI**: implement the profile page form(s) backed by `/api/profile` (view + update, including password change and platform selection) with optimistic UI states.
 4. **Club management UI**: surface club roster management for managers/admins (list players, add/remove player interactions) hitting `/api/clubs/{id}/players` endpoints; reuse standings styling for tables.
 5. **Public club detail page**: add match fixtures/results and navigation back to the standings list now that the roster view is wired to the API.
