@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ClubDetailsResponse, ClubRosterResponse } from './club-api.models';
+import { ClubDetailsResponse, ClubPlayerRequest, ClubRosterResponse } from './club-api.models';
 
 @Injectable({ providedIn: 'root' })
 export class ClubApiService {
@@ -14,5 +14,13 @@ export class ClubApiService {
 
   getDetails(clubId: number): Observable<ClubDetailsResponse> {
     return this.http.get<ClubDetailsResponse>(`${this.baseUrl}/${clubId}`);
+  }
+
+  addPlayer(clubId: number, payload: ClubPlayerRequest): Observable<ClubRosterResponse> {
+    return this.http.post<ClubRosterResponse>(`${this.baseUrl}/${clubId}/players`, payload);
+  }
+
+  removePlayer(clubId: number, playerId: number): Observable<ClubRosterResponse> {
+    return this.http.delete<ClubRosterResponse>(`${this.baseUrl}/${clubId}/players/${playerId}`);
   }
 }

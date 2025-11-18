@@ -11,6 +11,10 @@ export interface ClubPlayer {
   role: UserRole;
 }
 
+export interface ClubPlayerRequest {
+  userId: number;
+}
+
 export interface ClubRosterResponse {
   id: number;
   name: string;
