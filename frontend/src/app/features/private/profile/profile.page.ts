@@ -202,7 +202,7 @@ export class ProfilePageComponent implements OnInit {
 
     this.profileService
       .updateProfile(payload)
-      .pipe(finalize(() => this.saving.set(false)))
+      .pipe(finalize(() => this.saving.set(false)), takeUntilDestroyed())
       .subscribe({
         next: (updated) => {
           this.successMessage.set('Profile updated successfully.');

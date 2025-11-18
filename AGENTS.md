@@ -21,5 +21,4 @@ This repository currently tracks both the Spring Boot backend and Angular fronte
 - Run the frontend unit suite once a headless Chrome binary is available (`npm test -- --watch=false --progress=false --browsers=ChromeHeadless`).
 - Wire up real OAuth2/OIDC login + token storage in the auth service/guard and ensure API calls include credentials (a dev proxy to the backend may be needed).
 - Continue profile management UI work backed by `/api/profile` (view/update, password change, platform selection) with optimistic UI states.
-- Add regression coverage for profile load failures and ensure subscriptions are cleaned up with `takeUntilDestroyed()` in profile-related components.
 - Verify the shared platform model stays consistent across auth, registration, and profile flows (avoid duplicate literal unions).
