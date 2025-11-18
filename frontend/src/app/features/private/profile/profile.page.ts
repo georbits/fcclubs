@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ChangeDetectionStrategy, OnInit, inject, signal } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit, computed, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators, AbstractControl, ValidatorFn } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -12,7 +12,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { finalize } from 'rxjs';
 import { PLATFORM_OPTIONS, Platform } from '../../../core/models/platform';
-import { ProfileService, UpdateProfileRequest } from './profile.service';
+import { ProfileResponse, ProfileService, UpdateProfileRequest } from './profile.service';
 
 @Component({
   selector: 'app-profile-page',
@@ -37,6 +37,45 @@ import { ProfileService, UpdateProfileRequest } from './profile.service';
       </mat-card-header>
       <mat-card-content class="space-y-4">
         <div
+          *ngIf="displayProfile()"
+          class="flex flex-col gap-3 rounded border border-slate-800 bg-slate-900/80 p-3 md:flex-row md:items-center"
+        >
+          <div class="flex items-center gap-3">
+            <img
+              *ngIf="displayProfile()?.profileImageUrl; else avatarFallback"
+              [src]="displayProfile()?.profileImageUrl"
+              [alt]="displayProfile()?.displayName"
+              class="h-16 w-16 rounded-full border border-slate-700 object-cover shadow"
+            />
+            <ng-template #avatarFallback>
+              <div
+                class="flex h-16 w-16 items-center justify-center rounded-full border border-slate-700 bg-slate-800 text-slate-200"
+              >
+                <mat-icon>person</mat-icon>
+              </div>
+            </ng-template>
+            <div>
+              <div class="text-lg font-semibold text-slate-50">{{ displayProfile()?.displayName }}</div>
+              <div class="text-sm text-slate-400">{{ displayProfile()?.email }}</div>
+              <div class="text-xs text-slate-400">Updated {{ displayProfile()?.updatedAt | date: 'short' }}</div>
+            </div>
+          </div>
+          <div class="md:ml-auto flex items-center gap-3">
+            <div class="rounded-full bg-slate-800 px-3 py-1 text-xs font-semibold text-slate-100">
+              {{ displayProfile()?.platform }}
+            </div>
+            <span class="text-slate-300 text-sm">{{ displayProfile()?.platformHandle }}</span>
+            <div
+              *ngIf="optimisticUpdate()"
+              class="flex items-center gap-2 rounded-full border border-amber-700 bg-amber-900/40 px-3 py-1 text-xs text-amber-50"
+            >
+              <mat-spinner diameter="16"></mat-spinner>
+              <span>Saving…</span>
+            </div>
+          </div>
+        </div>
+
+        <div
           *ngIf="successMessage()"
           class="rounded border border-emerald-700 bg-emerald-900/40 p-3 text-sm text-emerald-100"
         >
@@ -57,6 +96,7 @@ import { ProfileService, UpdateProfileRequest } from './profile.service';
           class="grid gap-4 md:grid-cols-2"
           [formGroup]="form"
           (ngSubmit)="saveProfile()"
+          [class.opacity-60]="saving()"
         >
           <mat-form-field appearance="outline" floatLabel="always">
             <mat-label>Email</mat-label>
@@ -141,6 +181,10 @@ export class ProfilePageComponent implements OnInit {
   saving = signal(false);
   successMessage = signal<string | null>(null);
   errorMessage = signal<string | null>(null);
+  private profile = signal<ProfileResponse | null>(null);
+  private optimisticProfile = signal<ProfileResponse | null>(null);
+  readonly displayProfile = computed(() => this.optimisticProfile() ?? this.profile());
+  readonly optimisticUpdate = computed(() => Boolean(this.optimisticProfile()));
 
   form = this.fb.group(
     {
@@ -167,6 +211,7 @@ export class ProfilePageComponent implements OnInit {
       .pipe(finalize(() => this.loading.set(false)), takeUntilDestroyed())
       .subscribe({
         next: (profile) => {
+          this.profile.set(profile);
           this.form.patchValue({
             email: profile.email,
             displayName: profile.displayName,
@@ -200,11 +245,23 @@ export class ProfilePageComponent implements OnInit {
     this.successMessage.set(null);
     this.errorMessage.set(null);
 
+    const previousProfile = this.profile();
+    if (previousProfile) {
+      this.optimisticProfile.set({
+        ...previousProfile,
+        ...payload,
+        profileImageUrl: payload.profileImageUrl ?? null,
+        updatedAt: new Date().toISOString(),
+      });
+    }
+
     this.profileService
       .updateProfile(payload)
       .pipe(finalize(() => this.saving.set(false)), takeUntilDestroyed())
       .subscribe({
         next: (updated) => {
+          this.profile.set(updated);
+          this.optimisticProfile.set(null);
           this.successMessage.set('Profile updated successfully.');
           this.form.patchValue({
             email: updated.email,
@@ -217,7 +274,13 @@ export class ProfilePageComponent implements OnInit {
           });
           this.form.markAsPristine();
         },
-        error: () => this.errorMessage.set('Saving failed. Please review your inputs and try again.'),
+        error: () => {
+          if (previousProfile) {
+            this.profile.set(previousProfile);
+          }
+          this.optimisticProfile.set(null);
+          this.errorMessage.set('Saving failed. Please review your inputs and try again.');
+        },
       });
   }
 

@@ -41,6 +41,7 @@ describe('ProfilePageComponent', () => {
     expect(profileService.loadProfile).toHaveBeenCalled();
     expect(component.form.controls.email.value).toBe(profileResponse.email);
     expect(component.form.controls.platform.value).toBe(profileResponse.platform);
+    expect(component.displayProfile()).toEqual(profileResponse);
     expect(component.loading()).toBeFalse();
   });
 
@@ -68,6 +69,32 @@ describe('ProfilePageComponent', () => {
 
     expect(profileService.updateProfile).toHaveBeenCalledWith(payload);
     expect(component.successMessage()).toContain('Profile updated successfully');
+  });
+
+  it('optimistically updates the profile preview while saving', () => {
+    const updateSubject = new Subject<ProfileResponse>();
+    profileService.updateProfile.and.returnValue(updateSubject.asObservable());
+
+    component.form.patchValue({
+      email: 'captain@example.com',
+      displayName: 'Optimistic Captain',
+      platform: 'EA',
+      platformHandle: 'OptHandle',
+      profileImageUrl: '',
+      newPassword: '',
+      confirmPassword: '',
+    });
+
+    component.saveProfile();
+
+    expect(component.optimisticUpdate()).toBeTrue();
+    expect(component.displayProfile()?.displayName).toBe('Optimistic Captain');
+
+    updateSubject.error(new Error('fail'));
+
+    expect(component.errorMessage()).toContain('Saving failed');
+    expect(component.optimisticUpdate()).toBeFalse();
+    expect(component.displayProfile()).toEqual(profileResponse);
   });
 
   it('surfaces an error when saving fails', () => {
