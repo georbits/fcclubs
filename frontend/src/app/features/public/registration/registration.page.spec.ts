@@ -46,7 +46,11 @@ describe('RegistrationPageComponent', () => {
   });
 
   it('submits registration when the form is valid', () => {
-    component.form.setValue({ ...requestPayload, confirmPassword: requestPayload.password });
+    component.form.setValue({
+      ...requestPayload,
+      profileImageUrl: requestPayload.profileImageUrl ?? '',
+      confirmPassword: requestPayload.password,
+    });
     const navigateSpy = spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
     component.submit();
 
@@ -58,7 +62,11 @@ describe('RegistrationPageComponent', () => {
 
   it('shows an error message when registration fails', () => {
     authService.register.and.returnValue(throwError(() => new Error('fail')));
-    component.form.setValue({ ...requestPayload, confirmPassword: requestPayload.password });
+    component.form.setValue({
+      ...requestPayload,
+      profileImageUrl: requestPayload.profileImageUrl ?? '',
+      confirmPassword: requestPayload.password,
+    });
 
     component.submit();
 

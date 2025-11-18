@@ -10,7 +10,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { finalize } from 'rxjs';
 import { ClubApiService } from '../../../core/api/club-api.service';
-import { ClubRosterResponse } from '../../../core/api/club-api.models';
+import { ClubDetailsResponse, ClubResultSummary } from '../../../core/api/club-api.models';
 import { PLATFORM_OPTIONS, Platform } from '../../../core/models/platform';
 
 @Component({
@@ -59,7 +59,7 @@ import { PLATFORM_OPTIONS, Platform } from '../../../core/models/platform';
           <ng-container *ngIf="club() as data">
             <p class="text-sm text-slate-200">
               {{ data.name }} is registered under short code {{ data.shortCode }}. Fans can follow the roster and platform
-              handles below while match results are being wired up.
+              handles below while we surface their latest results.
             </p>
 
             <mat-list *ngIf="data.players?.length" class="bg-transparent divide-y divide-slate-800">
@@ -85,6 +85,29 @@ import { PLATFORM_OPTIONS, Platform } from '../../../core/models/platform';
             </mat-list>
 
             <p *ngIf="!data.players?.length" class="text-sm text-slate-300">No players registered yet for this club.</p>
+
+            <div class="space-y-2">
+              <h3 class="text-sm font-semibold uppercase tracking-wide text-slate-200">Recent results</h3>
+              <p *ngIf="!data.recentResults?.length" class="text-sm text-slate-300">No completed fixtures yet.</p>
+
+              <mat-list *ngIf="data.recentResults?.length" class="bg-transparent divide-y divide-slate-800">
+                <mat-list-item
+                  *ngFor="let result of data.recentResults"
+                  class="flex flex-col items-start gap-1 py-3"
+                >
+                  <div class="flex w-full items-center justify-between">
+                    <div class="flex items-center gap-2">
+                      <mat-chip color="primary" selected>{{ result.homeClub ? 'Home' : 'Away' }}</mat-chip>
+                      <span class="font-semibold text-slate-100">{{ opponentName(result) }}</span>
+                    </div>
+                    <span class="text-sm text-slate-200">{{ result.homeScore }} - {{ result.awayScore }}</span>
+                  </div>
+                  <div class="text-xs text-slate-400">{{ result.leagueName }} {{ result.leagueSeason }} · Fixture #{{
+                    result.fixtureId
+                  }}</div>
+                </mat-list-item>
+              </mat-list>
+            </div>
           </ng-container>
         </mat-card-content>
 
@@ -100,7 +123,7 @@ export class ClubDetailsPageComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly clubApi = inject(ClubApiService);
 
-  club = signal<ClubRosterResponse | null>(null);
+  club = signal<ClubDetailsResponse | null>(null);
   loading = signal(true);
   error = signal<string | null>(null);
 
@@ -117,7 +140,7 @@ export class ClubDetailsPageComponent implements OnInit {
           return;
         }
 
-        this.fetchRoster(clubId);
+        this.fetchClubDetails(clubId);
       });
   }
 
@@ -125,12 +148,21 @@ export class ClubDetailsPageComponent implements OnInit {
     return this.platformMap.get(platform) ?? platform;
   }
 
-  private fetchRoster(clubId: number): void {
+  opponentName(result: ClubResultSummary): string {
+    const club = this.club();
+    if (!club) {
+      return '';
+    }
+
+    return result.homeClubId === club.id ? result.awayClubName : result.homeClubName;
+  }
+
+  private fetchClubDetails(clubId: number): void {
     this.loading.set(true);
     this.error.set(null);
 
     this.clubApi
-      .getRoster(clubId)
+      .getDetails(clubId)
       .pipe(finalize(() => this.loading.set(false)), takeUntilDestroyed())
       .subscribe({
         next: (response) => this.club.set(response),

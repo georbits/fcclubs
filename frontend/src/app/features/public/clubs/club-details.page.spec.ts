@@ -3,7 +3,7 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import { ClubApiService } from '../../../core/api/club-api.service';
-import { ClubRosterResponse } from '../../../core/api/club-api.models';
+import { ClubDetailsResponse } from '../../../core/api/club-api.models';
 import { ClubDetailsPageComponent } from './club-details.page';
 
 describe('ClubDetailsPageComponent', () => {
@@ -11,7 +11,7 @@ describe('ClubDetailsPageComponent', () => {
   let component: ClubDetailsPageComponent;
   let clubApi: jasmine.SpyObj<ClubApiService>;
 
-  const roster: ClubRosterResponse = {
+  const roster: ClubDetailsResponse = {
     id: 4,
     name: 'Galaxy FC',
     shortCode: 'GFC',
@@ -35,11 +35,28 @@ describe('ClubDetailsPageComponent', () => {
         role: 'PLAYER',
       },
     ],
+    recentResults: [
+      {
+        fixtureId: 21,
+        leagueId: 2,
+        leagueName: 'Premier',
+        leagueSeason: '2024',
+        kickoffAt: '2024-06-01T00:00:00Z',
+        homeClubId: 4,
+        homeClubName: 'Galaxy FC',
+        awayClubId: 10,
+        awayClubName: 'Rivals',
+        homeScore: 3,
+        awayScore: 1,
+        status: 'COMPLETED',
+        homeClub: true,
+      },
+    ],
   };
 
   beforeEach(async () => {
-    clubApi = jasmine.createSpyObj<ClubApiService>('ClubApiService', ['getRoster']);
-    clubApi.getRoster.and.returnValue(of(roster));
+    clubApi = jasmine.createSpyObj<ClubApiService>('ClubApiService', ['getDetails']);
+    clubApi.getDetails.and.returnValue(of(roster));
 
     await TestBed.configureTestingModule({
       imports: [ClubDetailsPageComponent],
@@ -59,12 +76,12 @@ describe('ClubDetailsPageComponent', () => {
   });
 
   it('loads roster details for the provided club id', () => {
-    expect(clubApi.getRoster).toHaveBeenCalledWith(4);
+    expect(clubApi.getDetails).toHaveBeenCalledWith(4);
     expect(component.club()?.name).toBe(roster.name);
   });
 
   it('surfaces an error when the roster lookup fails', () => {
-    clubApi.getRoster.and.returnValue(throwError(() => new Error('failure')));
+    clubApi.getDetails.and.returnValue(throwError(() => new Error('failure')));
 
     fixture = TestBed.createComponent(ClubDetailsPageComponent);
     component = fixture.componentInstance;
