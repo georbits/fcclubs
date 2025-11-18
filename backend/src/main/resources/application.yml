@@ -21,7 +21,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: ${OAUTH_ISSUER_URI:https://example.com/issuer}
+          issuer-uri: ${OAUTH_ISSUER_URI:http://localhost:8080}
 
 app:
   version: ${APP_VERSION:dev}
