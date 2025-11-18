@@ -1,12 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Platform } from '../models/platform';
 
 export interface RegistrationRequest {
   email: string;
   displayName: string;
   password: string;
-  platform: 'EA' | 'PS5' | 'XBOX';
+  platform: Platform;
   platformHandle: string;
 }
 

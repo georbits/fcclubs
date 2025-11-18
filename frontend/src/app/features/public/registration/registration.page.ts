@@ -10,6 +10,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { finalize } from 'rxjs';
 import { AuthService, RegistrationRequest } from '../../../core/auth/auth.service';
+import { PLATFORM_OPTIONS } from '../../../core/models/platform';
 
 @Component({
   selector: 'app-registration-page',
@@ -108,11 +109,7 @@ export class RegistrationPageComponent {
   private readonly fb = inject(FormBuilder);
   private readonly authService = inject(AuthService);
 
-  readonly platforms = [
-    { value: 'EA' as const, label: 'EA App' },
-    { value: 'PS5' as const, label: 'PlayStation 5' },
-    { value: 'XBOX' as const, label: 'Xbox' },
-  ];
+  readonly platforms = PLATFORM_OPTIONS;
 
   submitting = signal(false);
   successMessage = signal<string | null>(null);
