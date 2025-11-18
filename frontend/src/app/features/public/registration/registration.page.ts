@@ -8,6 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { Router } from '@angular/router';
 import { finalize } from 'rxjs';
 import { AuthService, RegistrationRequest } from '../../../core/auth/auth.service';
 import { PLATFORM_OPTIONS } from '../../../core/models/platform';
@@ -34,10 +35,6 @@ import { PLATFORM_OPTIONS } from '../../../core/models/platform';
           <mat-card-subtitle>Join the competition with your platform handle</mat-card-subtitle>
         </mat-card-header>
         <mat-card-content class="space-y-4">
-          <div *ngIf="successMessage()" class="rounded border border-emerald-700 bg-emerald-900/40 p-3 text-sm text-emerald-100">
-            {{ successMessage() }}
-          </div>
-
           <div *ngIf="errorMessage()" class="rounded border border-rose-700 bg-rose-900/40 p-3 text-sm text-rose-100">
             {{ errorMessage() }}
           </div>
@@ -91,6 +88,14 @@ import { PLATFORM_OPTIONS } from '../../../core/models/platform';
               <mat-error *ngIf="form.controls.platformHandle.hasError('minlength')">Minimum 3 characters</mat-error>
             </mat-form-field>
 
+            <mat-form-field appearance="outline" floatLabel="always" class="md:col-span-2">
+              <mat-label>Avatar URL</mat-label>
+              <input matInput type="url" formControlName="profileImageUrl" />
+              <mat-icon matSuffix>image</mat-icon>
+              <mat-hint>Optional link to your profile image</mat-hint>
+              <mat-error *ngIf="form.controls.profileImageUrl.hasError('pattern')">Enter a valid URL</mat-error>
+            </mat-form-field>
+
             <div class="md:col-span-2 flex items-center gap-3">
               <button mat-flat-button color="primary" type="submit" [disabled]="submitting()">
                 <mat-spinner *ngIf="submitting()" diameter="20" class="!w-5 !h-5"></mat-spinner>
@@ -108,11 +113,11 @@ import { PLATFORM_OPTIONS } from '../../../core/models/platform';
 export class RegistrationPageComponent {
   private readonly fb = inject(FormBuilder);
   private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
 
   readonly platforms = PLATFORM_OPTIONS;
 
   submitting = signal(false);
-  successMessage = signal<string | null>(null);
   errorMessage = signal<string | null>(null);
 
   form = this.fb.group(
@@ -129,6 +134,10 @@ export class RegistrationPageComponent {
         nonNullable: true,
         validators: [Validators.required, Validators.minLength(3)],
       }),
+      profileImageUrl: this.fb.control('', {
+        nonNullable: true,
+        validators: [Validators.pattern(/^https?:\/\/.+/i)],
+      }),
     },
     { validators: this.passwordsMatchValidator() }
   );
@@ -140,7 +149,6 @@ export class RegistrationPageComponent {
     }
 
     this.submitting.set(true);
-    this.successMessage.set(null);
     this.errorMessage.set(null);
 
     const payload: RegistrationRequest = {
@@ -149,6 +157,7 @@ export class RegistrationPageComponent {
       password: this.form.controls.password.value,
       platform: this.form.controls.platform.value as RegistrationRequest['platform'],
       platformHandle: this.form.controls.platformHandle.value,
+      profileImageUrl: this.form.controls.profileImageUrl.value || null,
     };
 
     this.authService
@@ -156,8 +165,10 @@ export class RegistrationPageComponent {
       .pipe(finalize(() => this.submitting.set(false)))
       .subscribe({
         next: (response) => {
-          this.successMessage.set(`Welcome ${response.displayName}! Check your email to verify your account.`);
           this.form.reset();
+          this.router.navigate(['/register/success'], {
+            state: { displayName: response.displayName },
+          });
         },
         error: () => this.errorMessage.set('Registration failed. Please try again or contact support.'),
       });

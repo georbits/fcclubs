@@ -49,6 +49,7 @@ describe('AuthService', () => {
       password: 'password123',
       platform: 'EA',
       platformHandle: 'new-handle',
+      profileImageUrl: 'https://example.com/avatar.png',
     };
 
     let response: RegistrationResponse | undefined;
@@ -57,12 +58,14 @@ describe('AuthService', () => {
     const mock = httpMock.expectOne('/api/auth/register');
     expect(mock.request.method).toBe('POST');
     mock.flush({
-      userId: 1,
+      id: 1,
       email: request.email,
       displayName: request.displayName,
       platform: request.platform,
+      platformHandle: request.platformHandle,
+      profileImageUrl: request.profileImageUrl,
     });
 
-    expect(response?.userId).toBe(1);
+    expect(response?.id).toBe(1);
   });
 });
