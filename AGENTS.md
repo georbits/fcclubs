@@ -19,4 +19,3 @@ This repository currently tracks both the Spring Boot backend and Angular fronte
 ## Immediate next steps
 - Run the frontend unit suite once a headless Chrome binary is available (`npm test -- --watch=false --progress=false --browsers=ChromeHeadless`).
 - Continue profile management UI work backed by `/api/profile` (view/update, password change, platform selection) with optimistic UI states.
-- Verify the shared platform model stays consistent across auth, registration, and profile flows (avoid duplicate literal unions).

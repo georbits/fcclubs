@@ -9,10 +9,12 @@ const profileResponse: ProfileResponse = {
   id: 7,
   email: 'captain@example.com',
   displayName: 'Club Captain',
+  role: 'PLAYER',
   platform: PLATFORM_OPTIONS[0].value,
   platformHandle: 'CaptainHandle',
   profileImageUrl: 'https://example.com/avatar.png',
-  roles: ['USER'],
+  createdAt: '2024-01-01T00:00:00Z',
+  updatedAt: '2024-01-02T00:00:00Z',
 };
 
 describe('ProfilePageComponent', () => {
