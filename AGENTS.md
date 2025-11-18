@@ -16,7 +16,7 @@ This repository currently tracks both the Spring Boot backend and Angular fronte
 - Avoid committing binary assets; prefer SVG or text-based alternatives.
 
 ## Recent progress
-- Public registration page now uses a reactive form that posts to `/auth/register`, includes platform selection, validation, and submission/error states, and has accompanying unit tests (ChromeHeadless currently unavailable in this environment).
+- Removed the legacy Spring MVC layer in favor of the new `/api` stack and deleted duplicate repositories/entities so Maven tests run cleanly again.
 
 ## Immediate next steps
 - Run the frontend unit suite once a headless Chrome binary is available (`npm test -- --watch=false --progress=false --browsers=ChromeHeadless`).
