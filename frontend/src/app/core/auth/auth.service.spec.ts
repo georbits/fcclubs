@@ -1,6 +1,6 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { AuthService, RegistrationRequest, RegistrationResponse } from './auth.service';
+import { AuthService, LoginRequest, LoginResponse, RegistrationRequest, RegistrationResponse } from './auth.service';
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -67,5 +67,21 @@ describe('AuthService', () => {
     });
 
     expect(response?.id).toBe(1);
+  });
+
+  it('sends login requests and returns tokens', () => {
+    const request: LoginRequest = {
+      email: 'player@example.com',
+      password: 'password123',
+    };
+
+    let response: LoginResponse | undefined;
+    service.login(request).subscribe((res) => (response = res));
+
+    const mock = httpMock.expectOne('/api/auth/login');
+    expect(mock.request.method).toBe('POST');
+    mock.flush({ accessToken: 'jwt-token', tokenType: 'Bearer', expiresIn: 3600 });
+
+    expect(response?.accessToken).toBe('jwt-token');
   });
 });

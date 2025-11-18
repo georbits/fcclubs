@@ -3,6 +3,17 @@ import { computed, inject, Injectable, signal } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Platform } from '../models/platform';
 
+export interface LoginRequest {
+  email: string;
+  password: string;
+}
+
+export interface LoginResponse {
+  accessToken: string;
+  tokenType: string;
+  expiresIn: number;
+}
+
 export interface RegistrationRequest {
   email: string;
   displayName: string;
@@ -44,6 +55,10 @@ export class AuthService {
   clearSession(): void {
     this.accessToken.set(null);
     localStorage.removeItem('fcclubs_access_token');
+  }
+
+  login(request: LoginRequest): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(`${this.apiBaseUrl}/auth/login`, request);
   }
 
   register(request: RegistrationRequest): Observable<RegistrationResponse> {

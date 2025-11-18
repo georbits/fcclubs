@@ -7,11 +7,13 @@ import { ClubDetailsPageComponent } from './features/public/clubs/club-details.p
 import { HomePageComponent } from './features/public/home/home.page';
 import { RegistrationPageComponent } from './features/public/registration/registration.page';
 import { RegistrationSuccessPageComponent } from './features/public/registration/registration-success.page';
+import { LoginPageComponent } from './features/public/login/login.page';
 
 export const routes: Routes = [
   { path: '', component: HomePageComponent, title: 'Standings' },
   { path: 'register', component: RegistrationPageComponent, title: 'Register' },
   { path: 'register/success', component: RegistrationSuccessPageComponent, title: 'Registration complete' },
+  { path: 'login', component: LoginPageComponent, title: 'Login' },
   { path: 'clubs/:clubId', component: ClubDetailsPageComponent, title: 'Club detail' },
   {
     path: 'profile',
