@@ -25,5 +25,6 @@ docker compose up --build
 - Frontend: http://localhost:4200
 - Backend API/health: http://localhost:8080/api/health
 - PostgreSQL: localhost:5432 (database/user/password: `fcclubs`)
+- Default admin (seeded by the Postgres init script on first launch): `admin@fcclubs.local` / `admin1234`
 
 Stop the stack with `docker compose down` (add `-v` to remove the persisted database volume).

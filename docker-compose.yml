@@ -9,6 +9,7 @@ services:
       POSTGRES_PASSWORD: fcclubs
     volumes:
       - db_data:/var/lib/postgresql/data
+      - ./docker/local/initdb:/docker-entrypoint-initdb.d
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U fcclubs"]
       interval: 10s
