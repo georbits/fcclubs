@@ -3,7 +3,6 @@
 This repository currently tracks both the Spring Boot backend and Angular frontend for the FC26 Pro Clubs Tournament platform. Use these notes as the starting point for the next task.
 
 ## Next steps (proposed backlog)
-1. **Profile management UI**: implement the profile page form(s) backed by `/api/profile` (view + update, including password change and platform selection) with optimistic UI states.
 
 ## Environment reminders
 - No remotes are configured in this sandbox; create/update branches locally unless a remote is added.
@@ -17,4 +16,3 @@ This repository currently tracks both the Spring Boot backend and Angular fronte
 
 ## Immediate next steps
 - Run the frontend unit suite once a headless Chrome binary is available (`npm test -- --watch=false --progress=false --browsers=ChromeHeadless`).
-- Continue profile management UI work backed by `/api/profile` (view/update, password change, platform selection) with optimistic UI states.
