@@ -14,3 +14,16 @@ This repository hosts the FC26 Pro Clubs Tournament web platform, consisting of 
 4. Connect the SPA to the API endpoints, iterating on leagues, clubs, and match result workflows.
 
 Additional deployment, infrastructure, and CI/CD instructions will be added as we implement the system.
+
+## Running locally with Docker Compose
+The repository ships with a Compose file that builds and runs the full stack: PostgreSQL, the Spring Boot API, and the production Angular build served by Nginx.
+
+```bash
+docker compose up --build
+```
+
+- Frontend: http://localhost:4200
+- Backend API/health: http://localhost:8080/api/health
+- PostgreSQL: localhost:5432 (database/user/password: `fcclubs`)
+
+Stop the stack with `docker compose down` (add `-v` to remove the persisted database volume).

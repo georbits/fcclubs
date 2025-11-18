@@ -1,0 +1,9 @@
+# Global ignores for Docker build contexts
+.git
+.gitignore
+**/node_modules
+**/dist
+backend/target
+**/.vscode
+**/.idea
+**/.DS_Store
