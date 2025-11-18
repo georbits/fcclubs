@@ -7,9 +7,8 @@ This repository currently tracks both the Spring Boot backend and Angular fronte
 2. **Public registration flow**: build the registration page UI to call `/api/auth/register`, handle validation/errors, and add a success path/redirect.
 3. **Profile management UI**: implement the profile page form(s) backed by `/api/profile` (view + update, including password change and platform selection) with optimistic UI states.
 4. **Club management UI**: surface club roster management for managers/admins (list players, add/remove player interactions) hitting `/api/clubs/{id}/players` endpoints; reuse standings styling for tables.
-5. **Result reporting UI**: implement the match result submission page to post scores to `/api/matches/{id}/result`, with permission-aware messaging and duplicate-submission handling.
-6. **Public club detail page**: fetch and display club info (logo/name/roster/recent results) once backend endpoints exist or are stubbed.
-7. **Styling/testing**: expand Tailwind/Material theming, add component/unit tests where practical, and re-run `npm test -- --watch=false --browsers=ChromeHeadless --progress=false` once Chrome is available.
+5. **Public club detail page**: fetch and display club info (logo/name/roster/recent results) once backend endpoints exist or are stubbed.
+6. **Styling/testing**: expand Tailwind/Material theming, add component/unit tests where practical, and re-run `npm test -- --watch=false --browsers=ChromeHeadless --progress=false` once Chrome is available.
 
 ## Environment reminders
 - No remotes are configured in this sandbox; create/update branches locally unless a remote is added.
