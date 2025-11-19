@@ -40,7 +40,12 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/register").permitAll()
                         .requestMatchers("/api/auth/login").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/clubs/*/players", "/api/clubs/*/players/").permitAll()
-                        .requestMatchers("/api/leagues/*/standings").permitAll()
+                        .requestMatchers(HttpMethod.GET,
+                                "/api/leagues/*/standings",
+                                "/api/leagues/*/standings/",
+                                "/api/public/leagues/*/standings",
+                                "/api/public/leagues/*/standings/")
+                        .permitAll()
                         .anyRequest().authenticated())
                 .exceptionHandling(exceptionHandling ->
                         exceptionHandling.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
